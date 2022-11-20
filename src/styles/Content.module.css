@@ -1,0 +1,11 @@
+.wrapper {
+  overflow-y: hidden;
+  height: 100vh;
+}
+.content {
+  overflow: hidden;
+  background-color: #0e103d;
+  border-radius: 15px;
+  min-height: 96vh;
+  margin: 1.5em 1em;
+}

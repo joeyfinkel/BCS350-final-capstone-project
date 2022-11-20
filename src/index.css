@@ -1,1 +1,39 @@
+#root > div {
+  /* background-color: #1d3557; */
+  background-color: #66717e80;
+  color: #f7f7ff;
+  height: 100vh !important;
+}
 
+a {
+  text-decoration: none !important;
+}
+
+.redirect-link {
+  color: #f7f7ff;
+}
+
+.redirect-link:hover {
+  color: #0e103d;
+}
+
+/* Bootstrap button override */
+.btn-primary {
+  background-color: #0e103d80 !important;
+  border: 1px solid #0e103d80 !important;
+}
+
+.active {
+  background-color: #0e103d !important;
+  border: 1px solid #0e103d !important;
+}
+
+.btn-primary:hover {
+  background-color: #0e103d !important;
+  border: 1px solid #0e103d !important;
+}
+
+/* Bootstrap tabs override */
+.nav-link {
+  background-color: #f7f7ff !important;
+}

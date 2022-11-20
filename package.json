@@ -9,9 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@tanstack/react-table": "^8.5.30",
     "@types/react-bootstrap": "^0.32.31",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.1.3",

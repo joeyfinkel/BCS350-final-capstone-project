@@ -2,10 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
 import { Root } from './routes/root';
-import { Dashboard } from './routes/dashboard';
+import { ViewAll } from './routes/view-all';
 import { Register } from './routes/register';
+import { Settings } from './routes/settings';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Admin } from './routes/admin';
 
 const router = createBrowserRouter([
   {
@@ -13,12 +15,20 @@ const router = createBrowserRouter([
     element: <Root />,
   },
   {
-    path: 'dashboard',
-    element: <Dashboard />,
+    path: 'view-all',
+    element: <ViewAll />,
   },
   {
     path: 'register',
     element: <Register />,
+  },
+  {
+    path: 'settings',
+    element: <Settings />,
+  },
+  {
+    path: 'admin',
+    element: <Admin />,
   },
 ]);
 

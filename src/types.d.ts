@@ -1,7 +1,8 @@
 export type UserInfo = {
+  id: number;
   email: string;
   password: string;
-  firstName?: string;
-  lastName?: string;
-  userName?: string;
+  first_name?: string;
+  last_name?: string;
+  username?: string;
 };

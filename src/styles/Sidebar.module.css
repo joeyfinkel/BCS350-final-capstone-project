@@ -1,0 +1,14 @@
+.sidebar {
+  display: flex;
+  max-width: 300px;
+  background-color: #66717e;
+  height: 100vh;
+}
+
+.settingsLink {
+  color: #f7f7ff;
+}
+
+.settingsLink:hover {
+  color: #0e103d;
+}

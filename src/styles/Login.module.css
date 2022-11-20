@@ -1,8 +1,5 @@
 .wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  max-width: fit-content;
+  background-color: #66717e;
   height: 100vh;
 }
