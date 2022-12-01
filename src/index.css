@@ -17,6 +17,15 @@ a {
   color: #0e103d;
 }
 
+/* Bootstrap form override */
+.form-floating > label {
+  color: #66717e80 !important;
+}
+
+.text-muted {
+  color: #f7f7ff !important;
+}
+
 /* Bootstrap button override */
 .btn-primary {
   background-color: #0e103d80 !important;
@@ -36,4 +45,17 @@ a {
 /* Bootstrap tabs override */
 .nav-link {
   background-color: #f7f7ff !important;
+}
+
+/* Bootstrap modal override */
+.modal-content {
+  background-color: #66717e !important;
+}
+
+.modal-header {
+  border: 0 !important;
+}
+
+.modal-footer {
+  border: 0 !important;
 }

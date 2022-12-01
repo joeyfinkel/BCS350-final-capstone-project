@@ -34,82 +34,69 @@ export const Table = () => {
     'Profile Progress',
     'Sub Rows',
   ].map(
-    (header) =>
-      ({
-        header,
-        accessorKey: header as DeepKeys<Person>,
-        cell: (info) => info.getValue(),
-      } as ColumnDef<Person, unknown>)
+    (header): ColumnDef<Person> => ({
+      header,
+      accessorKey: header as DeepKeys<Person>,
+      cell: (info) => {
+        // console.log(info.cell);
+        return info.getValue();
+      },
+    })
   );
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    // getFilteredRowModel: getFilteredRowModel(),
-    // Provide our updateData function to our table meta
-    // meta: {
-    //   updateData: (rowIndex, columnId, value) => {
-    //     // Skip age index reset until after next rerender
-    //     skipAutoResetPageIndex();
-    //     setData((old) =>
-    //       old.map((row, index) => {
-    //         if (index === rowIndex) {
-    //           return {
-    //             ...old[rowIndex]!,
-    //             [columnId]: value,
-    //           };
-    //         }
-    //         return row;
-    //       })
-    //     );
-    //   },
-    // },
-    // debugTable: true,
   });
+
+  console.log(table.getRowModel().rows[0].getVisibleCells()[0]);
 
   return (
     <table>
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => {
-              return (
-                <th key={header.id} colSpan={header.colSpan}>
-                  {header.isPlaceholder ? null : (
-                    <div>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                      {header.column.getCanFilter() ? (
-                        <div>
-                          <Filter column={header.column} table={table} />
-                        </div>
-                      ) : null}
-                    </div>
-                  )}
-                </th>
-              );
-            })}
+            {headerGroup.headers.map((header) => (
+              <th key={header.id}>
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+              </th>
+            ))}
           </tr>
         ))}
       </thead>
       <tbody>
-        {table.getRowModel().rows.map((row) => {
-          return (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => {
-                return (
-                  <td key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                );
-              })}
-            </tr>
-          );
-        })}
+        {table.getRowModel().rows.map((row) => (
+          <tr key={row.id}>
+            {row.getVisibleCells().map((cell) => (
+              <td key={cell.id}>
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </td>
+            ))}
+          </tr>
+        ))}
       </tbody>
+      <tfoot>
+        {table.getFooterGroups().map((footerGroup) => (
+          <tr key={footerGroup.id}>
+            {footerGroup.headers.map((header) => (
+              <th key={header.id}>
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.footer,
+                      header.getContext()
+                    )}
+              </th>
+            ))}
+          </tr>
+        ))}
+      </tfoot>
     </table>
   );
 };

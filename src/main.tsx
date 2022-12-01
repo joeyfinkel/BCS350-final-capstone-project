@@ -1,41 +1,43 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
-import { Root } from './routes/root';
-import { ViewAll } from './routes/view-all';
-import { Register } from './routes/register';
-import { Settings } from './routes/settings';
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from 'react-router-dom';
+import { RequiredAuth } from './components/RequiredAuth';
+import { AuthProvider } from './context/authContext';
+import { ErrorPage } from './error-page';
 import './index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Admin } from './routes/admin';
+import { ViewData } from './routes/data';
+import { Register } from './routes/register';
+import { Root } from './routes/root';
+import { Settings } from './routes/settings';
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Root />,
-  },
-  {
-    path: 'view-all',
-    element: <ViewAll />,
-  },
-  {
-    path: 'register',
-    element: <Register />,
-  },
-  {
-    path: 'settings',
-    element: <Settings />,
-  },
-  {
-    path: 'admin',
-    element: <Admin />,
-  },
-]);
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      <Route path='/login' element={<Root />} />
+      <Route path='/register' element={<Register />} />
+      <Route path='*' element={<ErrorPage />} />
+      <Route element={<RequiredAuth />} errorElement={<ErrorPage />}>
+        <Route path='/' element={<ViewData />} />
+        <Route path='/settings' element={<Settings />} />
+        <Route path='/admin' element={<Admin />} />
+      </Route>
+    </>
+  )
+);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <div className='w-100 h-100'>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </div>
   </React.StrictMode>
 );

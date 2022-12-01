@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, LinkProps, useLocation } from 'react-router-dom';
 
-interface Props {
-  href: string;
+interface Props extends Pick<LinkProps, 'to'> {
   text: string;
 }
 
-export const NavigationButton: React.FC<Props> = ({ href, text }) => {
+export const NavigationButton: React.FC<Props> = ({ to, text }) => {
   const [active, setActive] = useState(false);
   const { pathname } = useLocation();
 
   const handleClick = () => {
-    setActive(pathname === href);
+    setActive(pathname === to);
   };
 
   return (
-    <Link to={href}>
+    <Link to={to}>
       <Button
         className={`w-100 ${
-          active || pathname === href ? 'active' : 'undefined'
+          active || pathname === to ? 'active' : 'undefined'
         }`}
         onClick={handleClick}
       >

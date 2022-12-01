@@ -1,8 +1,8 @@
 import React from 'react';
 
 type ButtonProps =
-  | { button?: boolean; buttonText?: string; signOut?: never }
-  | { button?: never; buttonText?: never; signOut?: boolean };
+  | { button?: boolean; text?: ButtonTypes; signOut?: never }
+  | { button?: never; text?: never; signOut?: boolean };
 type PositionProps =
   | 'end'
   | 'center'
@@ -10,6 +10,8 @@ type PositionProps =
   | 'between'
   | 'around'
   | 'evenly';
+
+export type ButtonTypes = 'login' | 'register';
 
 export type TitleProps = {
   title: string;
@@ -19,6 +21,5 @@ export type TitleProps = {
 export type SidebarProps = ButtonProps &
   TitleProps & {
     contentPosition: PositionProps;
-    loggedIn: boolean;
     children: React.ReactNode;
   };

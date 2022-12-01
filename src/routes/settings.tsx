@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import { Content } from '../components/Content';
+import { Layout } from '../components/Content';
 
 export const Settings: React.FC = () => {
   return (
-    <Content title='Settings'>
-      <Form className='d-flex flex-column'>
+    <Layout title='Settings'>
+      <p>Change your information here</p>
+      <Form className='d-flex flex-column justify-content-around h-100'>
         <Row>
           <Form.Group className='mb-3' controlId='name' as={Col}>
             <Form.Label>Your full name</Form.Label>
@@ -26,10 +27,12 @@ export const Settings: React.FC = () => {
             <Form.Control type='password' placeholder='Password' />
           </Form.Group>
         </Row>
-        <Button variant='secondary' type='submit' className='align-self-end'>
-          Save changes
-        </Button>
+        <div className='align-self-end'>
+          <Button variant='secondary' type='submit' className='align-self-end'>
+            Save changes
+          </Button>
+        </div>
       </Form>
-    </Content>
+    </Layout>
   );
 };
