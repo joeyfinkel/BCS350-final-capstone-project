@@ -29,6 +29,10 @@ export const greeting = (name: string) => {
   return `${message}, ${name}`;
 };
 
+const generateRandomNumber = (length: number) => {
+  return Math.floor(Math.random() * length);
+};
+
 /**
  * Generates a random password the length of `passwordLength`.
  * @param passwordLength The length of the generated password.
@@ -40,9 +44,22 @@ export const generatePassword = (passwordLength: number) => {
   let password = '';
 
   for (let i = 0; i <= passwordLength; i++) {
-    const randomNumber = Math.floor(Math.random() * chars.length);
+    const randomNumber = generateRandomNumber(chars.length);
     password += chars.substring(randomNumber, randomNumber + 1);
   }
 
   return password;
+};
+
+export const generateRandomNumbers = (length: number) => {
+  const numbers = '1234567890';
+  let res = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomNumber = generateRandomNumber(numbers.length);
+
+    res += numbers.substring(randomNumber, randomNumber + 1);
+  }
+
+  return parseInt(res);
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import { Layout } from '../components/Content';
+import { Layout } from '../components/Layout';
 
 export const Settings: React.FC = () => {
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Row, OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -11,62 +11,38 @@ import { UserField } from './UserField';
 
 interface Props {
   user: UserInfo;
-  idx: number;
 }
 
-export const UserData: React.FC<Props> = ({ user, idx }) => {
+export const UserData: React.FC<Props> = ({ user }) => {
   const [color, setColor] = useState('#f7f7ff');
-  const [value, setValue] = useState({ ...user });
-  const [updateMsg, setUpdateMsg] = useState('');
-  const container = useRef<HTMLDivElement | null>(null);
-  const { email, first_name, last_name, username } = user;
 
-  const deleteUser = () => {
+  const container = useRef<HTMLDivElement | null>(null);
+
+  const entries = useMemo(() => {
+    const entries = Object.entries(user);
+    const password = Object.keys(user).indexOf('password');
+    const firstPart = entries.slice(1, password);
+    const lastPart = entries.slice(password + 1, entries.length);
+
+    return [...firstPart, ...lastPart];
+  }, [user]);
+
+  const deleteUser = (id: number) => {
     axios
       .delete<string[]>(
-        'http://localhost:80/BCS350/capstone-project/api/index.php'
+        `http://localhost:80/BCS350/capstone-project/api/user/${id}/delete`
       )
-      .then((value) => {
-        console.log(value);
+      .then((res) => {
+        console.log(res.data);
       });
-  };
-
-  const editField = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    value: keyof UserInfo
-  ) => {
-    setValue((prev) => ({ ...prev, [value]: e.target.value }));
-    setUpdateMsg('Updating...');
   };
 
   return (
     <div className='d-flex align-items-center gap-2' ref={container}>
       <Row className='flex-fill'>
-        <UserField
-          userValue={{ first_name: value.first_name! }}
-          idx={idx}
-          onChange={(e) => editField(e, 'first_name')}
-          hint={updateMsg}
-          duration={500}
-        />
-        <User
-          label='Last name'
-          controlId={`lastName_${idx}`}
-          placeholder={value.last_name}
-          value={value.last_name}
-        />
-        <User
-          label='Username'
-          controlId={`username_${idx}`}
-          placeholder={value.username}
-          value={value.username}
-        />
-        <User
-          label='Email'
-          controlId={`email${idx}`}
-          placeholder={value.email}
-          value={value.email}
-        />
+        {entries.map((entry, idx) => (
+          <UserField entries={entry} key={idx} />
+        ))}
       </Row>
       <OverlayTrigger
         placement='bottom'
@@ -80,7 +56,7 @@ export const UserData: React.FC<Props> = ({ user, idx }) => {
           size='lg'
           role='button'
           color={color}
-          onClick={deleteUser}
+          onClick={() => deleteUser(user.id!)}
           onMouseEnter={() => setColor('red')}
           onMouseLeave={() => setColor('#f7f7ff')}
         />

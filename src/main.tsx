@@ -20,14 +20,15 @@ import { Settings } from './routes/settings';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
+      <Route index element={<Root />} />
       <Route path='/login' element={<Root />} />
       <Route path='/register' element={<Register />} />
-      <Route path='*' element={<ErrorPage />} />
       <Route element={<RequiredAuth />} errorElement={<ErrorPage />}>
         <Route path='/' element={<ViewData />} />
         <Route path='/settings' element={<Settings />} />
         <Route path='/admin' element={<Admin />} />
       </Route>
+      <Route path='*' element={<ErrorPage />} />
     </>
   )
 );

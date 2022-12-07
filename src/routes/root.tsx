@@ -20,37 +20,36 @@ export const Root: React.FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const auth = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
 
   const users = useUsers();
 
-  const handleSubmit = (e: React.MouseEvent<HTMLFormElement, MouseEvent>) => {
-    const form = e.currentTarget;
-    const user = users.find(
+  const login = () => {
+    const current = users.find(
       ({ email, password }) =>
         email === loginInfo.email && password === loginInfo.password
     );
+
+    console.log(current);
+
+    setUser?.(current!);
+  };
+
+  const handleSubmit = (e: React.MouseEvent<HTMLFormElement, MouseEvent>) => {
+    const form = e.currentTarget;
 
     if (!form.checkValidity()) {
       e.preventDefault();
       e.stopPropagation();
     }
 
-    setValidated(true);
-
-    if (user) {
-      console.log(auth.loggedIn);
-      const to = location.state?.from?.pathname || '/';
-      auth?.signIn?.(user, () => {
-        navigate('/', { replace: true });
-      });
-    }
+    login();
+    console.log(user);
   };
 
   return (
     <Sidebar contentPosition='center' title='Login' text='login' button>
       <Form
-        action='#'
         className='d-flex flex-column'
         noValidate
         validated={validated}
@@ -62,7 +61,7 @@ export const Root: React.FC = () => {
               type='email'
               placeholder='name@example.com'
               required
-              userValue={loginInfo.email}
+              value={loginInfo.email}
               onChange={(e) =>
                 setLoginInfo((prev) => ({ ...prev, email: e.target.value }))
               }
@@ -76,7 +75,7 @@ export const Root: React.FC = () => {
               type='password'
               placeholder='Password'
               required
-              userValue={loginInfo.password}
+              value={loginInfo.password}
               onChange={(e) =>
                 setLoginInfo((prev) => ({
                   ...prev,

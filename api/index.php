@@ -16,6 +16,7 @@ switch ($method) {
     if (isset($path[3]) && is_numeric($path[3])) {
       $sql .= " WHERE id = :id";
       $stmt = $conn->prepare($sql);
+      
       $stmt->bindParam(':id', $path[3]);
       $stmt->execute();
       $users = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -49,6 +50,19 @@ switch ($method) {
 
     break;
   case 'DELETE':
+    $sql = 'DELETE FROM users WHERE id = :id';
+    $path = explode('/', $_SERVER['REQUEST_URI']);
+    $stmt = $conn->prepare($sql);
+
+    $stmt->bindParam(':id', $path[3]);
+
+    if ($stmt->execute()) {
+      $response = ['status' => 1, 'message' => 'Record deleted successfully.'];
+    } else {
+      $response = ['status' => 0, 'message' => 'Failed to delete record.'];
+    }
+
+    echo json_encode($response);
 
     break;
 }

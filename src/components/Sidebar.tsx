@@ -16,11 +16,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   titleSize,
 }) => {
   const [color, setColor] = useState('#f7f7ff');
-  const auth = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { user, setUser } = useContext(AuthContext);
 
   const logout = () => {
-    auth.signOut?.(() => navigate('/login'));
+    setUser?.(null);
   };
 
   return (
@@ -30,7 +29,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           className={`d-flex flex-column justify-content-${contentPosition} gap-3 w-100`}
         >
           <div className='d-flex justify-content-between align-items-center gap-2'>
-            {auth.loggedIn ? (
+            {user ? (
               <Link to='/settings' className={styles.settingsLink}>
                 <Title title={title} titleSize={titleSize} />
               </Link>

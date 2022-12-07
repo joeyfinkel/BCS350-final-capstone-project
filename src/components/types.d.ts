@@ -1,4 +1,5 @@
 import React from 'react';
+import { UserProps } from './User';
 
 type ButtonProps =
   | { button?: boolean; text?: ButtonTypes; signOut?: never }
@@ -23,3 +24,11 @@ export type SidebarProps = ButtonProps &
     contentPosition: PositionProps;
     children: React.ReactNode;
   };
+
+export type UserFieldType = {
+  value: keyof UserInfo;
+  idx: number;
+  duration: number;
+  hint: string;
+  onChange?: FormControlProps['onChange'];
+};

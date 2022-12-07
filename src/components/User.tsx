@@ -11,43 +11,52 @@ export interface UserProps
     >,
     Pick<React.HTMLAttributes<HTMLFormElement>, 'className'>,
     Pick<FormGroupProps, 'controlId' | 'as'>,
-    Pick<React.HTMLAttributes<HTMLInputElement>, 'value'> {
+    Pick<React.InputHTMLAttributes<HTMLInputElement>, 'value'> {
   label: string;
   hint?: string;
   duration?: number;
 }
 
-export const User: React.FC<UserProps> = ({
-  label,
-  type,
-  placeholder,
-  as,
-  className,
-  controlId,
-  value,
-  hint,
-  readOnly,
-  duration,
-  onChange,
-}) => {
-  return (
-    <Form.Group className={className} controlId={controlId} as={as ? as : Col}>
-      <Form.Label>{label}</Form.Label>
-      <Form.Control
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        readOnly={readOnly}
-        onChange={onChange}
-      />
-      {duration ? (
-        <ShowComponentWithDuration
-          duration={duration}
-          element={<Form.Text muted>{hint}</Form.Text>}
+export const User = React.forwardRef<HTMLInputElement, UserProps>(
+  (props, ref) => {
+    const {
+      label,
+      type,
+      placeholder,
+      as,
+      className,
+      controlId,
+      value,
+      hint,
+      readOnly,
+      duration,
+      onChange,
+    } = props;
+
+    return (
+      <Form.Group
+        className={className}
+        controlId={controlId}
+        as={as ? as : Col}
+      >
+        <Form.Label>{label}</Form.Label>
+        <Form.Control
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          readOnly={readOnly}
+          onChange={onChange}
+          ref={ref}
         />
-      ) : (
-        <Form.Text muted>{hint}</Form.Text>
-      )}
-    </Form.Group>
-  );
-};
+        {duration ? (
+          <ShowComponentWithDuration
+            duration={duration}
+            element={<Form.Text muted>{hint}</Form.Text>}
+          />
+        ) : (
+          <Form.Text muted>{hint}</Form.Text>
+        )}
+      </Form.Group>
+    );
+  }
+);

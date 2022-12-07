@@ -1,18 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 
 export const RequiredAuth = () => {
-  const { loggedIn } = useContext(AuthContext);
-  const location = useLocation();
+  const { user } = useContext(AuthContext);
 
-  console.log(loggedIn);
-
-  const auth = true;
-
-  return auth ? (
-    <Outlet />
-  ) : (
-    <Navigate to='/login' state={{ from: location }} replace />
-  );
+  return user ? <Outlet /> : <Navigate to='/login' replace />;
 };

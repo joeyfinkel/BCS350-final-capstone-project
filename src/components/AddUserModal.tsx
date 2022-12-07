@@ -1,15 +1,17 @@
 import axios from 'axios';
-import React, { useState } from 'react';
-import { Button, Form, ModalProps } from 'react-bootstrap';
+import React, { useState, useEffect, useRef } from 'react';
+import { Button, ModalProps } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import { usePassword } from '../hooks/usePassword';
 import { UserInfo } from '../types';
+import { generateRandomNumbers } from '../utils/helpers';
 import { User } from './User';
 
 export const AddUserModal: React.FC<
   Required<Pick<ModalProps, 'show' | 'onHide' | 'container'>>
 > = ({ onHide, show, container }) => {
   const password = usePassword(8);
+  const [shouldRefresh, setRefresh] = useState(false);
   const [user, setUser] = useState<UserInfo>({
     email: '',
     password,
@@ -17,14 +19,41 @@ export const AddUserModal: React.FC<
     last_name: '',
   });
 
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+
+  const onExited = () => {
+    setUser({
+      email: '',
+      password: '',
+      username: '',
+      first_name: '',
+      last_name: '',
+    });
+  };
+
   const addNewUser = () => {
+    const passwordValue = passwordRef.current?.value;
+
     axios.post(
       'http://localhost:80/BCS350/capstone-project/api/index.php',
       user
     );
+    setUser((prev) => ({ ...prev, password: passwordValue! }));
 
+    setRefresh(!shouldRefresh);
+    // Closes the modal
     onHide();
   };
+
+  useEffect(() => {
+    const refreshUsers = () => {
+      axios.get('http://localhost:80/BCS350/capstone-project/api/index.php');
+    };
+
+    if (shouldRefresh) {
+      refreshUsers();
+    }
+  }, [shouldRefresh]);
 
   return (
     <Modal
@@ -32,6 +61,7 @@ export const AddUserModal: React.FC<
       show={show}
       onHide={onHide}
       container={container}
+      onExited={onExited}
       centered
       static
     >
@@ -60,9 +90,14 @@ export const AddUserModal: React.FC<
             label='Username'
             type='text'
             controlId='username'
-            onChange={(e) =>
-              setUser((prev) => ({ ...prev, username: e.target.value }))
+            value={
+              user.first_name === '' && user.last_name === ''
+                ? ''
+                : `${user.first_name?.toLowerCase()}${user.last_name?.toLowerCase()}${generateRandomNumbers(
+                    2
+                  )}`
             }
+            readOnly
           />
           <User
             label='Email'
@@ -70,22 +105,23 @@ export const AddUserModal: React.FC<
             controlId='email'
             onChange={(e) =>
               setUser((prev) => ({ ...prev, email: e.target.value }))
-            } 
+            }
           />
           <User
             label='Password'
             type='password'
-            readOnly
-            value={password}
-            controlId='password'
             hint="The auto-generated password can't be changed"
+            controlId='password'
+            value={password}
+            ref={passwordRef}
+            readOnly
           />
         </div>
       </Modal.Body>
       <Modal.Footer>
         <Button
           variant='primary'
-          disabled={Object.values(user).length !== 5}
+          disabled={Object.values(user).length !== 4}
           onClick={addNewUser}
         >
           Add user

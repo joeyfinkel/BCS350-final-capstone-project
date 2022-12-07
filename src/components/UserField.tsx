@@ -1,30 +1,40 @@
-import React from 'react';
-import { MappedType, UserInfo } from '../types';
+import React, { useState, useId } from 'react';
 import { capitalizeWord } from '../utils/helpers';
 import { User, UserProps } from './User';
 
-interface Props extends Omit<UserProps, 'label' | 'value'> {
-  userValue: Partial<MappedType<UserInfo>>;
-  idx: number;
+export interface UserFieldProps extends Omit<UserProps, 'label' | 'value'> {
+  entries: [string, string | number];
 }
 
-export const UserField: React.FC<Props> = ({
-  userValue,
-  idx,
+export const UserField: React.FC<UserFieldProps> = ({
   placeholder,
-  ...rest
+  entries,
 }) => {
-  const [key, value] = Object.entries(userValue)[0];
+  const [key, value] = entries;
+  const [updateMsg, setUpdateMsg] = useState('');
+  const [userValue, setUserValue] = useState(value);
+
+  const id = useId();
+
   const label = key.includes('_') ? key.split('_').join(' ') : key;
+
+  const editField = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setUserValue(e.target.value);
+    setUpdateMsg('Updating...');
+  };
 
   return (
     <User
       label={capitalizeWord(label)}
       className='w-100'
-      controlId={`${key}_${idx}`}
-      value={value}
-      placeholder={placeholder ? placeholder : value.toString()}
-      {...rest}
+      controlId={`${key}_${id}`}
+      value={userValue}
+      placeholder={placeholder ? placeholder : userValue?.toString()}
+      onChange={editField}
+      duration={500}
+      hint={updateMsg}
     />
   );
 };

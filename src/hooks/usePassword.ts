@@ -6,9 +6,7 @@ export const usePassword = (length: number) => {
 
   useEffect(() => {
     const createPassword = () => {
-      const _password = generatePassword(length);
-
-      setPassword(_password);
+      setPassword(generatePassword(length));
     };
 
     createPassword();
